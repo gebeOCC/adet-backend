@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
@@ -14,15 +15,32 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'priority' => 'nullable|in:low,medium,high,urgent',
+                'due_date' => 'nullable|date',
+            ],
+            [
+                'title.required' => 'The task title is required.',
+                'title.max' => 'The task title cannot be longer than 255 characters.',
+                'priority.in' => 'Invalid priority. Allowed values: low, medium, high, urgent.',
+                'due_date.date' => 'The due date must be a valid date.',
+            ]
+        );
 
-        Task::create($validated);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        Task::create($validator->validated());
 
         return response()->json([
-            'message' => 'success'
+            'message' => 'Task created successfully'
         ], 201);
     }
 
@@ -49,14 +67,34 @@ class TaskController extends Controller
             ], 404);
         }
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'priority' => 'nullable|in:low,medium,high,urgent',
+                'due_date' => 'nullable|date',
+            ],
+            [
+                'title.required' => 'The task title is required.',
+                'title.max' => 'The task title cannot exceed 255 characters.',
+                'priority.in' => 'Invalid priority. Allowed values: low, medium, high, urgent.',
+                'due_date.date' => 'The due date must be a valid date.',
+            ]
+        );
 
-        $task->update($validated);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        return response()->json($task, 200);
+        $task->update($validator->validated());
+
+        return response()->json([
+            'message' => 'Task updated successfully',
+            'task' => $task
+        ], 200);
     }
 
     public function destroy($id)
@@ -72,7 +110,7 @@ class TaskController extends Controller
         $task->delete();
 
         return response()->json([
-            'message' => 'success'
+            'message' => 'Task deleted successfully'
         ], 200);
     }
 }
