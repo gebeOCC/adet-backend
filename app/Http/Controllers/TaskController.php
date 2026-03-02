@@ -21,13 +21,11 @@ class TaskController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'priority' => 'nullable|in:low,medium,high,urgent',
-                'due_date' => 'nullable|date',
             ],
             [
                 'title.required' => 'The task title is required.',
                 'title.max' => 'The task title cannot be longer than 255 characters.',
                 'priority.in' => 'Invalid priority. Allowed values: low, medium, high, urgent.',
-                'due_date.date' => 'The due date must be a valid date.',
             ]
         );
 
@@ -73,13 +71,11 @@ class TaskController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'priority' => 'nullable|in:low,medium,high,urgent',
-                'due_date' => 'nullable|date',
             ],
             [
                 'title.required' => 'The task title is required.',
                 'title.max' => 'The task title cannot exceed 255 characters.',
                 'priority.in' => 'Invalid priority. Allowed values: low, medium, high, urgent.',
-                'due_date.date' => 'The due date must be a valid date.',
             ]
         );
 

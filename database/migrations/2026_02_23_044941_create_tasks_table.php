@@ -16,7 +16,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('medium');
-            $table->date('due_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,7 +27,6 @@ return new class extends Migration
                 'description' => 'Complete the backend and API endpoints',
                 'status' => 'in_progress',
                 'priority' => 'high',
-                'due_date' => now()->addDays(7),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -37,7 +35,6 @@ return new class extends Migration
                 'description' => 'Go through validation and Eloquent sections',
                 'status' => 'pending',
                 'priority' => 'medium',
-                'due_date' => now()->addDays(3),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -46,7 +43,6 @@ return new class extends Migration
                 'description' => 'Test all controllers and models',
                 'status' => 'pending',
                 'priority' => 'urgent',
-                'due_date' => now()->addDays(2),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -55,7 +51,6 @@ return new class extends Migration
                 'description' => 'Deploy the application to staging server',
                 'status' => 'pending',
                 'priority' => 'high',
-                'due_date' => now()->addDays(10),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -64,7 +59,6 @@ return new class extends Migration
                 'description' => 'Check code for consistency and best practices',
                 'status' => 'completed',
                 'priority' => 'low',
-                'due_date' => now()->subDays(1),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
